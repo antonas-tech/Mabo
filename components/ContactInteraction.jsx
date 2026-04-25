@@ -35,10 +35,10 @@ export default function ContactInteraction() {
       onMouseMove={handleMove}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="relative overflow-hidden border-t border-metal/20 px-4 py-24 md:px-8 md:py-36"
+      className="relative overflow-hidden border-t border-[var(--line)] px-4 py-24 md:px-8 md:py-36"
     >
       <motion.div
-        className="pointer-events-none absolute z-0 hidden h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-wood/50 md:block"
+        className="pointer-events-none absolute z-0 hidden h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(176,128,83,0.55)] md:block"
         style={{
           left: cursorX,
           top: cursorY,
@@ -47,9 +47,9 @@ export default function ContactInteraction() {
         }}
       />
 
-      <div className="noise-panel relative z-10 mx-auto grid max-w-[1600px] gap-16 border border-metal/20 p-6 md:grid-cols-[0.75fr_1.25fr] md:p-10">
+      <div className="relative z-10 mx-auto grid max-w-[1600px] gap-16 border border-[var(--line)] bg-[rgba(255,255,255,0.025)] p-6 md:grid-cols-[0.75fr_1.25fr] md:p-10">
         <div className="space-y-8">
-          <p className="mono text-xs uppercase tracking-[0.45em] text-metal">
+          <p className="text-xs uppercase tracking-[0.45em] text-[var(--muted)]">
             Контактный рез
           </p>
           <p className="max-w-md text-sm leading-7 text-white/55 md:text-base">
@@ -71,7 +71,7 @@ export default function ContactInteraction() {
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative overflow-hidden border border-metal/25 px-6 py-6 text-sm uppercase tracking-[0.22em] text-white transition-colors hover:border-wood"
+                className="group relative overflow-hidden border border-[var(--line)] px-6 py-6 text-sm uppercase tracking-[0.22em] text-white transition-colors hover:border-[rgba(176,128,83,0.75)]"
               >
                 <span className="absolute inset-x-0 bottom-0 h-0 bg-white transition-all duration-500 group-hover:h-full" />
                 <span className="relative z-10 transition-colors group-hover:text-black">

@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "@/components/SplitText";
-import { pollinationImage } from "@/lib/images";
+import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,29 +14,25 @@ const capabilities = [
     title: "Распил",
     metric: "0.1 mm",
     text: "Оптимизированный раскрой плитных материалов на форматно-раскроечном центре с чистой геометрией, картами реза и контролем каждой детали.",
-    prompt:
-      "ultra_realistic_high_tech_panel_saw_cutting_dark_walnut_furniture_board_titanium_machine_body_cinematic_industrial_luxury_precise_laser_line_sawdust_particles_8k",
+    image: images.cut,
   },
   {
     title: "Кромление",
     metric: "zero line",
     text: "Кромка как продолжение плоскости: бесшовный визуальный контур, аккуратные радиусы и стабильная адгезия на сложных декорах.",
-    prompt:
-      "macro_photo_premium_edge_banding_machine_applying_dark_wood_veneer_to_graphite_panel_chrome_guides_warm_workshop_lighting_hyperreal_8k",
+    image: images.edge,
   },
   {
     title: "Присадка",
     metric: "CNC grid",
     text: "Сверление, фрезеровка и посадочные узлы под фурнитуру выполняются в единой координатной логике без ручных допусков.",
-    prompt:
-      "hyperrealistic_cnc_drilling_machine_making_precise_holes_in_black_furniture_panel_metal_bits_cool_titanium_lighting_minimal_factory_8k",
+    image: images.drill,
   },
   {
     title: "Деталировка",
     metric: "ready kit",
     text: "Маркировка, упаковка и спецификации превращают набор панелей в понятный конструктор для сборки без лишнего шума.",
-    prompt:
-      "premium_furniture_parts_detailing_table_labeled_dark_walnut_panels_technical_drawings_metal_ruler_graphite_background_cinematic_top_view_8k",
+    image: images.detail,
   },
 ];
 
@@ -110,12 +105,11 @@ export default function CapabilitiesTabs() {
               exit={{ opacity: 0, scale: 0.96, filter: "blur(16px)", rotate: -0.4 }}
               transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Image
-                src={pollinationImage(current.prompt)}
+              <img
+                src={current.image}
                 alt={`${current.title} millimeter`}
-                fill
-                sizes="(max-width: 900px) 100vw, 48vw"
                 className="image-cover"
+                loading={active === 0 ? "eager" : "lazy"}
               />
             </motion.div>
           </AnimatePresence>

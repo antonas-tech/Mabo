@@ -1,9 +1,9 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { pollinationImage } from "@/lib/images";
+import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,37 +12,44 @@ const steps = [
     number: "01",
     title: "Сканирование материала",
     copy: "Партия проходит входной контроль: геометрия, направление волокна, карта дефектов.",
-    prompt:
-      "industrial_luxury_woodworking_workshop_operator_scanning_dark_walnut_board_with_laser_grid_cnc_factory_titanium_metal_surfaces_cinematic_low_key_light_hyperrealistic_8k",
+    image: images.titaniumMachine,
   },
   {
     number: "02",
     title: "Оптимизация карты",
     copy: "ПО раскладывает детали так, чтобы кромка, текстура и припуски работали как единая система.",
-    prompt:
-      "close_up_of_cnc_cutting_optimization_screen_reflected_in_dark_walnut_panel_precision_furniture_manufacturing_minimal_high_tech_workshop_chrome_details_8k",
+    image: images.detail,
   },
   {
     number: "03",
     title: "Чистый распил",
     copy: "Диск ведется без рывка: рез сохраняет плоскость, а торец не требует маскировки.",
-    prompt:
-      "macro_photography_of_panel_saw_cutting_premium_dark_wood_board_flying_sawdust_controlled_motion_cinematic_industrial_luxury_lighting_8k",
+    image: images.processCut,
   },
   {
     number: "04",
     title: "Кромка и присадка",
     copy: "Финальные операции фиксируют точность: фасад закрывается без зазора, фурнитура садится ровно.",
-    prompt:
-      "hyperrealistic_edge_banding_machine_applying_dark_walnut_edge_to_furniture_panel_cnc_drilling_station_background_titanium_chrome_factory_8k",
+    image: images.processEdge,
   },
 ];
 
 export default function GalleryProcess() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   useLayoutEffect(() => {
+    if (isMobile) return undefined;
+
     const context = gsap.context(() => {
       const panels = gsap.utils.toArray(".process-panel");
       const images = gsap.utils.toArray(".process-panel img");
@@ -97,20 +104,20 @@ export default function GalleryProcess() {
     }, sectionRef);
 
     return () => context.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
-    <section ref={sectionRef} className="relative h-screen overflow-hidden bg-[#0a0a0a]">
+    <section ref={sectionRef} className="process-section">
       <div className="absolute left-4 top-6 z-10 text-[10px] uppercase tracking-[0.45em] text-white/45 md:left-8">
         gallery process
       </div>
-      <div ref={trackRef} className="flex h-full w-max will-change-transform">
+      <div ref={trackRef} className="process-track">
         {steps.map((step) => (
           <article
             key={step.number}
-            className="process-panel grid h-screen w-screen shrink-0 grid-rows-[1fr_auto] overflow-hidden border-r border-white/10 md:grid-cols-[44vw_56vw] md:grid-rows-1"
+            className="process-panel"
           >
-            <div className="process-copy flex flex-col justify-between p-5 pt-20 md:p-10 md:pt-24">
+            <div className="process-copy">
               <div className="font-display text-[20vw] font-black leading-none tracking-[-0.1em] text-white/8 md:text-[14vw]">
                 {step.number}
               </div>
@@ -123,9 +130,9 @@ export default function GalleryProcess() {
                 </p>
               </div>
             </div>
-            <div className="relative min-h-[52vh] overflow-hidden md:min-h-0">
+            <div className="process-image">
               <img
-                src={pollinationImage(step.prompt)}
+                src={step.image}
                 alt={step.title}
                 className="h-full w-full object-cover will-change-transform"
                 loading="lazy"

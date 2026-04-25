@@ -4,15 +4,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { pollinationImage } from "@/lib/images";
+import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const heroTexture = pollinationImage(
-  "extreme macro photography of a circular saw blade slicing through dark premium walnut wood, titanium dust particles, industrial luxury workshop, cinematic side lighting, hyperrealistic, 8k, shallow depth of field, no text, no logo",
-  2400,
-  1350
-);
 
 export default function Hero() {
   const sectionRef = useRef(null);
@@ -29,48 +23,56 @@ export default function Hero() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const letters = gsap.utils.toArray(".hero-letter");
+      const mm = gsap.matchMedia();
 
       gsap.set(panelRef.current, {
-        clipPath: "inset(44% 8% 8% 8%)",
-        scale: 1.14,
+        clipPath: "inset(42% 5% 7% 5%)",
+        scale: 1.08,
       });
 
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=160%",
-          scrub: 1,
-          pin: true,
-        },
+      mm.add("(min-width: 769px)", () => {
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "+=135%",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+          },
+        });
+
+        timeline
+          .to(letters, {
+            x: (index) => (index - (letters.length - 1) / 2) * 28,
+            y: (index) => (index % 2 === 0 ? -18 : 18),
+            letterSpacing: "0.04em",
+            opacity: 0.24,
+            ease: "power2.out",
+          })
+          .to(
+            panelRef.current,
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              scale: 1,
+              ease: "power2.out",
+            },
+            0
+          )
+          .to(
+            ".hero-meta",
+            {
+              yPercent: -40,
+              opacity: 0,
+              ease: "power2.out",
+            },
+            0
+          );
       });
 
-      timeline
-        .to(letters, {
-          x: (index) => (index - (letters.length - 1) / 2) * 42,
-          y: (index) => (index % 2 === 0 ? -34 : 34),
-          letterSpacing: "0.08em",
-          opacity: 0.18,
-          ease: "power2.out",
-        })
-        .to(
-          panelRef.current,
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            scale: 1,
-            ease: "power2.out",
-          },
-          0
-        )
-        .to(
-          ".hero-meta",
-          {
-            yPercent: -80,
-            opacity: 0,
-            ease: "power2.out",
-          },
-          0
-        );
+      mm.add("(max-width: 768px)", () => {
+        gsap.set(panelRef.current, { clipPath: "inset(0% 0% 0% 0%)", scale: 1 });
+      });
 
       gsap.from(".hero-kicker span", {
         yPercent: 110,
@@ -101,19 +103,22 @@ export default function Hero() {
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-black text-stone-100">
       <div
         ref={panelRef}
-        className="absolute inset-0 z-0 bg-cover bg-center opacity-90"
-        style={{ backgroundImage: `url("${heroTexture}")` }}
+        className="absolute inset-x-3 bottom-24 top-[38%] z-0 overflow-hidden border border-white/10 bg-[#17120f] md:inset-0 md:border-0"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(10,10,10,0.08),rgba(10,10,10,0.78))]" />
+        <img
+          src={images.heroCut}
+          alt="Макро распил темного ореха на высокоточном станке"
+          className="h-full w-full object-cover"
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0.08),rgba(10,10,10,0.64)),radial-gradient(circle_at_52%_28%,rgba(222,176,116,0.14),transparent_36%)]" />
       </div>
 
-      <div className="grain" />
-
-      <div className="relative z-10 grid min-h-screen grid-rows-[auto_1fr_auto] px-5 py-5 md:px-10 md:py-8">
+      <div className="relative z-10 grid min-h-[100svh] grid-rows-[auto_1fr_auto] px-5 py-5 md:min-h-screen md:px-10 md:py-8">
         <header className="hero-meta flex items-start justify-between text-[10px] uppercase tracking-[0.34em] text-stone-300/70 md:text-xs">
           <span>millimeter / cnc atelier</span>
           <span className="hidden md:block">0.1 mm tolerance</span>
-          <span>moscow</span>
+          <span>precision</span>
         </header>
 
         <div className="flex flex-col justify-end pb-10 md:pb-14">
@@ -128,18 +133,18 @@ export default function Hero() {
           <h1
             ref={wordRef}
             aria-label="millimeter"
-            className="hero-word select-none whitespace-nowrap text-[22vw] font-black lowercase leading-[0.72] tracking-[-0.12em] md:text-[18.7vw]"
+            className="hero-word select-none whitespace-nowrap text-[21vw] font-black lowercase leading-[0.82] tracking-[-0.115em] md:text-[18.2vw]"
           >
             {"millimeter".split("").map((letter, index) => (
               <span
                 className="hero-letter inline-block text-transparent"
                 style={{
-                  backgroundImage: `url("${heroTexture}")`,
-                  backgroundSize: "160% 120%",
+                  backgroundImage: `url("${images.heroCut}")`,
+                  backgroundSize: "145% 115%",
                   backgroundPosition: `${index * 11}% 44%`,
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
-                  WebkitTextStroke: "1px rgba(229,224,214,0.18)",
+                  WebkitTextStroke: "1px rgba(232,226,214,0.26)",
                 }}
                 key={`${letter}-${index}`}
               >
@@ -148,7 +153,7 @@ export default function Hero() {
             ))}
           </h1>
 
-          <div className="hero-meta mt-8 grid gap-7 md:grid-cols-[minmax(0,0.88fr)_auto] md:items-end">
+          <div className="hero-meta mt-6 grid gap-7 md:mt-8 md:grid-cols-[minmax(0,0.88fr)_auto] md:items-end">
             <p className="max-w-2xl text-balance text-xl leading-[1.08] text-stone-100 md:text-4xl">
               Высокоточный цех для мебельных проектов, где геометрия, материал и край сходятся в одну
               безошибочную линию.
