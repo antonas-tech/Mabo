@@ -38,7 +38,7 @@ const steps = [
   },
 ];
 
-export function GalleryProcess() {
+export default function GalleryProcess() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
 
