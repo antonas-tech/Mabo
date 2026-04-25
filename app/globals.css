@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+:root {
+  --black: #0a0a0a;
+  --ink: #11100e;
+  --graphite: #24211d;
+  --walnut: #6f4a2e;
+  --walnut-light: #a16f47;
+  --titanium: #c7c5bd;
+  --chrome: #e8e5da;
+  --line: rgba(232, 229, 218, 0.16);
+  --muted: rgba(232, 229, 218, 0.58);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--black);
+  color: var(--chrome);
+  scroll-behavior: auto;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(111, 74, 46, 0.18), transparent 34rem),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 100%),
+    var(--black);
+  background-size: auto, 84px 84px, auto;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+body::selection {
+  background: var(--walnut-light);
+  color: var(--black);
+}
+
+button,
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-inter), Arial, sans-serif;
+}
+
+.noise {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  opacity: 0.06;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+.hairline {
+  border-color: var(--line);
+}
+
+.mask-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+}
+
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+
+.reveal-line > span {
+  display: block;
+  transform: translateY(115%);
+}
+
+.magnetic-target {
+  will-change: transform;
+}
+
+.image-reveal {
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+  overflow: hidden;
+}
+
+.image-reveal img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  will-change: transform;
+}
+
+.mm-outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(232, 229, 218, 0.26);
+  text-stroke: 1px rgba(232, 229, 218, 0.26);
+}
+
+@media (max-width: 768px) {
+  body {
+    background-size: auto, 46px 46px, auto;
+  }
+}
